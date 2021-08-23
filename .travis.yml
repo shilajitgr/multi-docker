@@ -1,0 +1,21 @@
+sudo: required
+service:
+        - docker
+
+before_install:
+        - docker build -t shilajitgr/react-test -f ./client/Dockerfile.dev ./client
+ 
+script:
+  - docker run -e CI=true shilajitgr/react-test npm test
+
+after_success:
+        - docker build -t shilajitgr/multi-client ./client
+        - docker build -t shilajitgr/multi-nginx ./nginx
+        - docker build -t shilajitgr/multi-server ./server
+        - docker build -t shilajitgr/multi-worker ./worker
+        # LOGGING INTO DOCKER CLI
+        - echo "$DOCKER_PASS"| docker login -u "$DOCKER_ID" --password-stdin
+        - docker push shilajitgr/multi-client
+        - docker push shilajitgr/multi-nginx
+        - docker push shilajitgr/multi-server
+        - docker push shilajitgr/multi-worker

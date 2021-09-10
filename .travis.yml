@@ -19,3 +19,16 @@ after_success:
         - docker push shilajitgr/multi-nginx
         - docker push shilajitgr/multi-server
         - docker push shilajitgr/multi-worker
+
+# all values in this section prior to branch may be improper
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-east-1'
+  app: 'multi-docker'
+  env: 'MultiDocker-env'
+  bucket_name: 'elasticbeanstalk-us-east-1-923445559289'
+  bucket_path: 'docker-multi'
+  on:
+    branch: main
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY

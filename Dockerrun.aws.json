@@ -1,0 +1,36 @@
+{
+ "AWSEBDockerrunVersion": 2,
+ "containerDefinitions": [
+  {
+   "name": "client",
+   "image": "shilajitgr/multi-client",
+   "hostname": "client",
+   "essential": false
+  },
+  {
+   "name": "server",
+   "image": "shilajitgr/multi-server",
+   "hostname": "api",
+   "essential": false
+  },
+  {
+   "name": "worker",
+   "image": "shilajitgr/multi-worker",
+   "essential": false
+  },
+  {
+   "name": "nginx",
+   "image": "shilajitgr/multi-nginx",
+   "essential": true,
+   "portMappings": [
+    {
+     "hostPort": 80,
+     "containerPort": 80
+    }
+   ],
+   "links": ["client", "server"]
+  }
+
+ ]
+ 
+}
